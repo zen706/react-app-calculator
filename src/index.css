@@ -1,13 +1,103 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Open+Sans:wght@300;400;700&family=Roboto:wght@100;400;700;900&family=Share+Tech+Mono&display=swap');
+
+* {
+  box-sizing: bordre-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.container {
+  background-color: rgb(14, 70, 83);
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+.calculator {
+  background-color: #000;
+  padding: 5px;
+  width: 400px;
+  height: 500px;
+  display: grid;
+  grid-template-areas:
+    'top top top top'
+    'ac ac div mul'
+    'seven eight nine sub'
+    'six five four plus'
+    'three two one equal'
+    'zero zero . equal';
+  grid-template-rows: auto repeat(5, 1fr);
+
+  font-size: 1.25rem;
+}
+
+
+.top {
+  grid-area: top;
+}
+#display {
+  color: white;
+  text-align: right;
+
+  font-size: 2rem;
+  width: 100%;
+  /* background-color: blue; */
+
+}
+.doing {
+  text-align: right;
+  height: 1.5rem;
+  /* background-color: red; */
+  color: rgb(224, 211, 18);
+  word-break: break-all;
+  word-break: break-word; 
+   /* margin-bottom: 5px; */
+}
+
+.button {
+  display: grid;
+  place-items: center;
+  background-color: white;
+  cursor: pointer;
+  color: white;
+  border: 1px solid #000;
+}
+.button:hover {
+  border: 1px solid rgb(218, 169, 11);
+  color: black;
+  transform: scale(1.01);
+}
+.button:active {
+  transform: scale(0.95);
+}
+
+.gray {
+  background-color: rgb(100, 98, 98);
+}
+.l-gray {
+  background-color: rgb(160, 156, 156);
+}
+#clear {
+  grid-area: ac;
+  background-color: rgb(212, 6, 6);
+}
+#zero {
+  grid-area: zero;
+}
+#equals {
+  grid-area: equal;
+  background-color: rgb(40, 40, 117);
+}
+
+#subtract {
+  /* grid-area: 2/4 /3/5; */
+  grid-area: sub;
+}
+#add {
+  /* grid-area: 3/4/4/5; */
+  grid-area: plus;
 }
