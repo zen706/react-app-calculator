@@ -1,42 +1,40 @@
-import React from 'react'
+import React from "react";
 
-
-const nums = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0']
-const ops = ['/', '*', '-', '+', '=']
+const nums = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0"];
+const ops = ["/", "*", "-", "+", "="];
 const numsIds = [
-  'seven',
-  'eight',
-  'nine',
-  'four',
-  'five',
-  'six',
-  'one',
-  'two',
-  'three',
-  'zero',
-]
-const opsIds = ['divide', 'multiply', 'subtract', 'add', 'equals']
-
+  "seven",
+  "eight",
+  "nine",
+  "four",
+  "five",
+  "six",
+  "one",
+  "two",
+  "three",
+  "zero",
+];
+const opsIds = ["divide", "multiply", "subtract", "add", "equals"];
 
 class App extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
-      expression: '',
+      expression: "",
       answer: 0,
-    }
+    };
 
-    this.clear = this.clear.bind(this)
-    this.handleClick = this.handleClick.bind(this)
-    this.compute = this.compute.bind(this)
+    this.clear = this.clear.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.compute = this.compute.bind(this);
   }
 
   clear = () => {
     this.setState({
-      expression: '',
+      expression: "",
       answer: 0,
-    })
-  }
+    });
+  };
   // 途中
   // handleClick = (e) => {
   //   const { innerText } = e.target
@@ -119,184 +117,190 @@ class App extends React.Component {
   // }
 
   handleClick = (e) => {
-    const { expression, answer } = this.state
-    const { innerText } = e.target
+    const { expression, answer } = this.state;
+    const { innerText } = e.target;
 
-    const lastNums = expression.split(/[-+*/]/)
-    const last = lastNums[lastNums.length - 1]
-    console.log(lastNums, last)
+    const lastNums = expression.split(/[-+*/]/);
+    const last = lastNums[lastNums.length - 1];
+    console.log(lastNums, last);
 
     if (/=/.test(expression)) {
       if (/[0-9]/.test(innerText)) {
         this.setState({
           expression: innerText,
           answer: innerText,
-        })
-      } else if (innerText === '.') {
+        });
+      } else if (innerText === ".") {
         this.setState({
-          expression: '0.',
-          answer: '0.',
-        })
+          expression: "0.",
+          answer: "0.",
+        });
       } else {
         this.setState({
           expression: answer + innerText,
           answer: innerText,
-        })
+        });
       }
-    } else if (answer === 'NAN') {
+    } else if (answer === "NAN") {
       this.setState({
         expression: innerText,
         answer: innerText,
-      })
-    } else if (innerText === '.') {
-      if (expression === '' || /[-*/+]/.test(expression.slice(-1))) {
+      });
+    } else if (innerText === ".") {
+      if (expression === "" || /[-*/+]/.test(expression.slice(-1))) {
         this.setState({
-          expression: expression + '0.',
-          answer: '0.',
-        })
+          expression: expression + "0.",
+          answer: "0.",
+        });
       } else if (expression.length >= 1) {
         // console.log(chunks, last)
-        if (last.includes('.')) return
-        if (expression.slice(-1) === '.') return
+        if (last.includes(".")) return;
+        if (expression.slice(-1) === ".") return;
         this.setState({
           expression: expression + innerText,
           answer: last + innerText,
-        })
+        });
       }
-    } else if (innerText === '-') {
+    } else if (innerText === "-") {
       if (
         /[*/+-]/.test(expression.slice(-2, -1)) &&
-        expression.slice(-1) === '-'
+        expression.slice(-1) === "-"
       ) {
-        return
+        return;
       } else if (
-        expression === '+' ||
-        expression === '/' ||
-        expression === '*'
+        expression === "+" ||
+        expression === "/" ||
+        expression === "*"
       ) {
         this.setState({
-          expression: '-',
+          expression: "-",
           answer: innerText,
-        })
+        });
       } else {
         this.setState({
           expression: expression + innerText,
           answer: innerText,
-        })
+        });
       }
     } else if (/[*/+]/.test(innerText)) {
       if (
-        expression.slice(-1) === '-' &&
+        expression.slice(-1) === "-" &&
         /[*-/+]/.test(expression.slice(-2, -1))
       ) {
         this.setState({
           expression: expression.slice(0, -2) + innerText,
           answer: innerText,
-        })
+        });
       } else if (/[*/+-]/.test(expression.slice(-1))) {
         this.setState({
           expression: expression.slice(0, -1) + innerText,
           answer: innerText,
-        })
+        });
       } else {
         this.setState({
           expression: expression + innerText,
           answer: innerText,
-        })
+        });
       }
-    } else if (innerText === '0') {
+    } else if (innerText === "0") {
       // console.log(last)
-      if (last === '0' && !lastNums.includes['.']) return
+      if (last === "0" && !lastNums.includes["."]) return;
       this.setState({
         expression: expression + innerText,
         answer: last + innerText,
-      })
+      });
     } else {
       this.setState({
         expression: expression + innerText,
         answer: last + innerText,
-      })
+      });
     }
-  }
+  };
 
   compute = () => {
-    const { expression, answer } = this.state
+    const { expression, answer } = this.state;
+    const first = expression.split(/[-+*/]/)[0];
     if (
-      expression === '' ||
-      expression === '-' ||
-      expression === '/' ||
-      expression === '+' ||
-      expression === '*'
+      expression === "" ||
+      expression === "-" ||
+      expression === "/" ||
+      expression === "+" ||
+      expression === "*"
     ) {
       this.setState({
-        expression: 'NAN',
-        answer: 'NAN',
-      })
+        expression: "=NAN",
+        answer: "NAN",
+      });
+    } else if (first.includes("NAN") && expression.includes("=")) {
+      return
+    } else if (first.includes("NAN")) {
+      this.setState({
+        expression: expression + "=" + "NAN",
+        answer: "NAN",
+      });
     } else {
       if (/[-*+/]/.test(expression.slice(-1))) {
-        const exLast = expression.slice(0, -1)
-        const res = eval(exLast)
+        const exLast = expression.slice(0, -1);
+        const res = eval(exLast);
         this.setState({
-          expression: exLast + '=' + res,
+          expression: exLast + "=" + res,
           answer: res,
-        })
+        });
       }
-      const result = eval(expression)
+      const result = eval(expression);
       this.setState({
-        expression: expression + '=' + result,
+        expression: expression + "=" + result,
         answer: result,
-      })
+      });
     }
-  }
+  };
 
   render() {
-    
-    
-    const { expression, answer } = this.state
+    const { expression, answer } = this.state;
     const numElements = nums.map((num, index) => {
       return (
         <div
-          className='button gray'
+          className="button gray"
           id={numsIds[index]}
           key={index}
           onClick={this.handleClick}
         >
           {num}
         </div>
-      )
-    })
+      );
+    });
     const opsElements = ops.map((op, index) => {
       return (
         <div
-          className='button l-gray'
+          className="button l-gray"
           id={opsIds[index]}
           key={index}
-          onClick={op === '=' ? this.compute : this.handleClick}
+          onClick={op === "=" ? this.compute : this.handleClick}
         >
           {op}
         </div>
-      )
-    })
+      );
+    });
 
     return (
-      <div className='container'>
-        <div className='calculator'>
-          <div className='top'>
-            <div className='doing'>{expression}</div>
-            <div id='display'>{answer}</div>
+      <div className="container">
+        <div className="calculator">
+          <div className="top">
+            <div className="doing">{expression}</div>
+            <div id="display">{answer}</div>
           </div>
-          <div className='button' id='clear' onClick={this.clear}>
+          <div className="button" id="clear" onClick={this.clear}>
             AC
           </div>
           {opsElements}
           {numElements}
-          <div className='button gray' id='decimal' onClick={this.handleClick}>
+          <div className="button gray" id="decimal" onClick={this.handleClick}>
             .
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;
